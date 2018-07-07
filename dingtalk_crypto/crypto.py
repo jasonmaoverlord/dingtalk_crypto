@@ -31,7 +31,7 @@ class DingTalkCrypto(object):
         :param encrypt_text: encoded text
         :return: rand_str, length, msg, corp_id
         """
-        aes_msg = base64.decodestring(encrypt_text)
+        aes_msg = base64.b64decode(encrypt_text)
         pkcs7_text = self._cipher.decrypt(aes_msg)
         text = self._pkcs7.decode(pkcs7_text)
         rand_str = text[:16]  # 16字节随机字符串
@@ -50,6 +50,15 @@ class DingTalkCrypto(object):
         rand_str = self._random.read(16)
         length = self._length(text)
         key = self._key
+        # rand_str = str(rand_str)
+        # length = str(length)
+        text = text.encode("utf-8")
+        # print(type(rand_str))
+        # print(type(length))
+        # print(type(text))
+        # print(type(key))
+        key = key.encode("utf-8")
+        # print(key)
         full_text = self._pkcs7.encode(rand_str + length + text + key)
         aes_text = self._cipher.encrypt(full_text)
         return base64.encodestring(aes_text)
@@ -73,6 +82,14 @@ class DingTalkCrypto(object):
         :param signature: 签名
         :return: boolean
         """
+        # print(type(encrypt_text))
+        # print(type(timestamp))
+        # print(type(nonce))
+        # print(type(self._token))
+        # print("encrypt_text:{}".format(encrypt_text))
+        # print("timestamp:{}".format(timestamp))
+        # print("nonce:{}".format(nonce))
+        # print("token:{}".format(self._token))
         return self._make_signature(encrypt_text, timestamp, nonce, self._token) == signature
 
     def sign(self, encrypt_text):
@@ -84,6 +101,9 @@ class DingTalkCrypto(object):
         token = self._token
         timestamp = str(get_timestamp())
         nonce = random_alpha()
+        # print("token:{}".format(token))
+        # print("timestamp:{}".format(timestamp))
+        # print("nonce:{}".format(nonce))
         signature = self._make_signature(encrypt_text, timestamp, nonce, token)
         return signature, timestamp, nonce
 
@@ -97,12 +117,15 @@ class DingTalkCrypto(object):
         :param token: str
         :return: str
         """
-        obj = hashlib.sha1(''.join(sorted([token, timestamp, nonce, encrypt_text])))
-        return obj.hexdigest()
+        link_message = ''.join(sorted([token, timestamp, nonce, encrypt_text]))
+        hash = hashlib.sha1()
+        hash.update(link_message.encode("utf-8"))
+        # obj = hashlib.sha1(''.join(sorted([token, timestamp, nonce, encrypt_text])))
+        return hash.hexdigest()
 
     @property
     def aes_key(self):
-        return base64.decodestring(self._encode_aes_key + '=')
+        return base64.b64decode(self._encode_aes_key + '=')
 
     @property
     def iv_vector(self):

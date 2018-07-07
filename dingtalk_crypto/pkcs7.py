@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import binascii
-import StringIO
+import io
+import base64
 
 
 class PKCS7(object):
@@ -18,8 +19,14 @@ class PKCS7(object):
         :param text: str
         :return: str
         """
+        # print(text)
+        # print(type(text))
         n1 = len(text)
-        val = int(binascii.hexlify(text[-1]), 16)
+        # print(n1)
+        # print(text[-1])
+        # print(type(text[-1]))
+        # val = int(binascii.hexlify(text[-1]), 16)
+        val = text[-1]
         if val > self.k:
             raise ValueError("Input is not padded or padding is corrupt")
         l = n1 - val
@@ -32,8 +39,8 @@ class PKCS7(object):
         :return: str
         """
         l = len(text)
-        output = StringIO.StringIO()
+        output = io.StringIO()
         val = self.k - (l % self.k)
-        for _ in xrange(val):
+        for _ in range(val):
             output.write('%02x' % val)
         return text + binascii.unhexlify(output.getvalue())

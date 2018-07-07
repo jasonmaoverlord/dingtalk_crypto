@@ -10,13 +10,13 @@ def read(file_name):
 
 
 setup(
-    name='dingtalk_crypto',
-    version='1.0.2',
+    name='dingtalk_crypto_upgrade',
+    version='1.0.0',
     description='钉钉加密解密工具',
     long_description='',
-    author='Yuez',
-    author_email='i@yuez.me',
-    url='https://github.com/zgs225/dingtalk_crypto',
+    author='jasonmaoverlord',
+    author_email='2420582240@qq.com',
+    url='https://github.com/jasonmaoverlord/dingtalk_crypto',
     packages=['dingtalk_crypto', 'tests'],
     install_requires=['pycrypto'],
     zip_safe=False,
@@ -24,12 +24,10 @@ setup(
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 2.6',
-        'Programming Language :: Python :: 2.7',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5'
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+
     ),
     license='MIT'
 )

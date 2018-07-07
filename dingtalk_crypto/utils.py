@@ -2,12 +2,12 @@
 
 import time
 import datetime
-import StringIO
+import io
 import random
 import string
 import contextlib
 
-alpha = string.letters + string.digits
+alpha = string.ascii_letters + string.digits
 
 
 def get_timestamp():
@@ -25,7 +25,9 @@ def random_alpha(length=8):
     :param length: int
     :return: str
     """
-    with contextlib.closing(StringIO.StringIO()) as buf:
-        for _ in xrange(length):
-            buf.write(random.choice(alpha))
-        return buf.read()
+    # with contextlib.closing(io.StringIO()) as buf:
+    #     for _ in range(length):
+    #         buf.write(random.choice(alpha))
+    #     nonce = buf.read()
+
+    return "".join(random.choice(alpha) for _ in range(length))
